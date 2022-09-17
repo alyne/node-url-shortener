@@ -23,7 +23,7 @@ router.post('/short', async (req, res) => {
           origUrl,
           shortUrl,
           urlId,
-          date: new Date(),
+          date: new Date()
         });
 
         await url.save();

@@ -3,25 +3,25 @@ const mongoose = require('mongoose');
 const UrlSchema = new mongoose.Schema({
   urlId: {
     type: String,
-    required: true,
+    required: true
   },
   origUrl: {
     type: String,
-    required: true,
+    required: true
   },
   shortUrl: {
     type: String,
-    required: true,
+    required: true
   },
   clicks: {
     type: Number,
     required: true,
-    default: 0,
+    default: 0
   },
   date: {
     type: String,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('Url', UrlSchema);

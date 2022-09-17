@@ -13,7 +13,7 @@ app.use('/', require('./routes/index'));
 app.use('/api', require('./routes/urls'));
 
 // Server Setup
-const PORT = 3333;
+const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);
 });
