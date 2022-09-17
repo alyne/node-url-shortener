@@ -19,7 +19,25 @@ router.post('/short', async (req, res) => {
 
   const respond = (res, fullUrlObj = {}) => {
     if (isSlackRequest) {
-      res.send(fullUrlObj.shortUrl);
+      // res.send(fullUrlObj.shortUrl);
+
+      res.json({
+        blocks: [
+          {
+            type: 'section',
+            fields: [
+              {
+                type: 'mrkdwn',
+                text: `*Short Url*:\n ${fullUrlObj.shortUrl}`
+              },
+              {
+                type: 'mrkdwn',
+                text: `*Long Url*:\n ${fullUrlObj.origUrl}`
+              }
+            ]
+          }
+        ]
+      });
     } else {
       res.json(fullUrlObj);
     }
