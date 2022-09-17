@@ -7,7 +7,24 @@ require('dotenv').config({ path: '../config/.env' });
 
 // Short URL Generator
 router.post('/short', async (req, res) => {
-  const { origUrl } = req.body;
+  const { origUrl: origUrlFromReq, text } = req.body;
+
+  const isSlackRequest = !!text;
+
+  const origUrl = text || origUrlFromReq;
+
+  console.log('origUrlFromReq', origUrlFromReq);
+  console.log('text', text);
+  console.log('origUrl', origUrl);
+
+  const respond = (res, fullUrlObj = {}) => {
+    if (isSlackRequest) {
+      res.send(fullUrlObj.shortUrl);
+    } else {
+      res.json(fullUrlObj);
+    }
+  };
+
   const base = process.env.BASE;
 
   const urlId = shortid.generate();
@@ -15,7 +32,7 @@ router.post('/short', async (req, res) => {
     try {
       let url = await Url.findOne({ origUrl });
       if (url) {
-        res.json(url);
+        respond(res, url);
       } else {
         const shortUrl = `${base}/${urlId}`;
 
@@ -27,7 +44,7 @@ router.post('/short', async (req, res) => {
         });
 
         await url.save();
-        res.json(url);
+        respond(res, url);
       }
     } catch (err) {
       console.log(err);
